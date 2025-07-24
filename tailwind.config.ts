@@ -63,6 +63,17 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				}
 			},
+			backgroundImage: {
+				'gradient-sso': 'var(--gradient-bg)',
+				'gradient-card': 'var(--gradient-card)'
+			},
+			boxShadow: {
+				'card-sso': 'var(--shadow-card)',
+				'button-sso': 'var(--shadow-button)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'var(--transition-smooth)'
+			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
