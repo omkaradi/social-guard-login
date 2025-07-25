@@ -12,6 +12,7 @@ import { ForgotPasswordModal } from "@/components/ForgotPasswordModal";
 import { PasswordExpiryModal } from "@/components/PasswordExpiryModal";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
+import jodoworldLogo from '@/assets/jodoworld-logo.png';
 import '../i18n/config';
 
 const Index = () => {
@@ -143,12 +144,22 @@ const Index = () => {
     if (emailError) {
       setEmailError('');
     }
+    
+    // Real-time validation
+    if (value && !validateEmail(value)) {
+      setEmailError(t('invalidEmail'));
+    }
   };
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     if (passwordError) {
       setPasswordError('');
+    }
+    
+    // Real-time validation
+    if (value && value.length < 6) {
+      setPasswordError(t('passwordTooShort'));
     }
   };
 
@@ -170,13 +181,12 @@ const Index = () => {
       
       {/* Header */}
       <header className="relative z-10 flex justify-between items-center p-6">
-        <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-button-sso">
-            <LogIn className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <div className="text-xl font-bold text-foreground">
-            Social<span className="text-primary">Guard</span>
-          </div>
+        <div className="flex items-center space-x-3">
+          <img 
+            src={jodoworldLogo} 
+            alt="Jodoworld" 
+            className="h-10 w-auto"
+          />
         </div>
         
         <div className="flex items-center space-x-3">
@@ -320,7 +330,7 @@ const Index = () => {
         <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
           <span>© 2024 {t('poweredBy')}</span>
           <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 transition-smooth">
-            SocialGuard Technologies
+            Avhan Technologies Pvt Ltd
           </Badge>
         </div>
       </footer>
