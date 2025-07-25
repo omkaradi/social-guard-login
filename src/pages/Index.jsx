@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
 import jodoworldLogo from '@/assets/jodoworld-logo.png';
 import cloudsBackground from '@/assets/clouds-background.jpg';
-import '../i18n/config';
+
 
 const Index = () => {
   const { t } = useTranslation();

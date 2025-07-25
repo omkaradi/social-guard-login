@@ -14,14 +14,16 @@ export const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
   const handleLanguageChange = (languageCode) => {
-    i18n.changeLanguage(languageCode);
-    localStorage.setItem('language', languageCode);
+    if (i18n && typeof i18n.changeLanguage === 'function') {
+      i18n.changeLanguage(languageCode);
+      localStorage.setItem('language', languageCode);
+    }
   };
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+  const currentLanguage = languages.find(lang => lang.code === (i18n?.language || 'en')) || languages[0];
 
   return (
-    <Select value={i18n.language} onValueChange={handleLanguageChange}>
+    <Select value={i18n?.language || 'en'} onValueChange={handleLanguageChange}>
       <SelectTrigger className="w-[140px] bg-card border-border/50 hover:border-primary/20 transition-smooth">
         <Globe className="w-4 h-4 mr-2 text-muted-foreground" />
         <SelectValue>
