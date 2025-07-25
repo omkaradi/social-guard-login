@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SSOButtons } from "@/components/SSOButtons";
-import { CaptchaBox } from "@/components/CaptchaBox";
+import { CustomCaptcha } from "@/components/CustomCaptcha";
+import { ForgotPasswordModal } from "@/components/ForgotPasswordModal";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
 import '../i18n/config';
@@ -18,8 +19,11 @@ const Index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaValid, setCaptchaValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language');
@@ -28,16 +32,43 @@ const Index = () => {
     }
   }, []);
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!captchaToken) {
+    // Reset errors
+    setEmailError('');
+    setPasswordError('');
+    
+    // Validate form
+    let hasErrors = false;
+    
+    if (!email) {
+      setEmailError(t('emailRequired'));
+      hasErrors = true;
+    } else if (!validateEmail(email)) {
+      setEmailError(t('invalidEmail'));
+      hasErrors = true;
+    }
+    
+    if (!password) {
+      setPasswordError(t('passwordRequired'));
+      hasErrors = true;
+    }
+    
+    if (!captchaValid) {
       toast({
         title: t('pleaseCompleteCaptcha'),
         variant: "destructive",
       });
-      return;
+      hasErrors = true;
     }
+
+    if (hasErrors) return;
 
     setIsLoading(true);
     
@@ -59,8 +90,22 @@ const Index = () => {
     }
   };
 
-  const handleCaptchaVerify = (token: string | null) => {
-    setCaptchaToken(token);
+  const handleCaptchaVerify = (isValid: boolean) => {
+    setCaptchaValid(isValid);
+  };
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (emailError) {
+      setEmailError('');
+    }
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (passwordError) {
+      setPasswordError('');
+    }
   };
 
   return (
@@ -88,8 +133,8 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
-        <Card className="w-full max-w-md bg-gradient-card backdrop-blur-lg border-border/20 shadow-card-sso">
+      <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4 sm:px-6 lg:px-8">
+        <Card className="w-full max-w-md mx-auto bg-gradient-card backdrop-blur-lg border-border/20 shadow-card-sso">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
               <LogIn className="w-8 h-8 text-accent" />
@@ -115,11 +160,16 @@ const Index = () => {
                     type="email"
                     placeholder={t('email')}
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-input border-border/50 focus:border-primary/50 transition-smooth"
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    className={`pl-10 bg-input border-border/50 focus:border-primary/50 transition-smooth ${
+                      emailError ? 'border-destructive focus:border-destructive' : ''
+                    }`}
                     required
                   />
                 </div>
+                {emailError && (
+                  <p className="text-sm text-destructive">{emailError}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -129,8 +179,10 @@ const Index = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder={t('password')}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-input border-border/50 focus:border-primary/50 transition-smooth"
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                    className={`pl-10 pr-10 bg-input border-border/50 focus:border-primary/50 transition-smooth ${
+                      passwordError ? 'border-destructive focus:border-destructive' : ''
+                    }`}
                     required
                   />
                   <button
@@ -141,23 +193,27 @@ const Index = () => {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                {passwordError && (
+                  <p className="text-sm text-destructive">{passwordError}</p>
+                )}
               </div>
 
               <div className="text-right">
                 <button
                   type="button"
+                  onClick={() => setShowForgotPassword(true)}
                   className="text-sm text-primary hover:text-accent transition-smooth"
                 >
                   {t('forgotPassword')}
                 </button>
               </div>
 
-              <CaptchaBox onVerify={handleCaptchaVerify} />
+              <CustomCaptcha onVerify={handleCaptchaVerify} />
 
               <Button
                 type="submit"
                 className="w-full h-12 bg-primary hover:bg-accent text-primary-foreground shadow-button-sso hover:shadow-button-sso hover:scale-105 transition-smooth"
-                disabled={isLoading || !captchaToken}
+                disabled={isLoading || !captchaValid}
               >
                 {isLoading ? (
                   <div className="flex items-center space-x-2">
@@ -175,6 +231,12 @@ const Index = () => {
           </CardContent>
         </Card>
       </main>
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal 
+        isOpen={showForgotPassword} 
+        onClose={() => setShowForgotPassword(false)} 
+      />
 
       {/* Footer */}
       <footer className="relative z-10 text-center p-6">

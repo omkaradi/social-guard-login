@@ -15,7 +15,21 @@ const resources = {
       "pleaseCompleteCaptcha": "Please complete the CAPTCHA",
       "loading": "Loading...",
       "error": "An error occurred. Please try again.",
-      "poweredBy": "Powered by"
+      "poweredBy": "Powered by",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "enterCaptcha": "Enter CAPTCHA code",
+      "invalidCaptcha": "Invalid CAPTCHA code",
+      "resetPassword": "Reset Password",
+      "resetPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
+      "resetEmailSent": "Reset link sent!",
+      "resetEmailDescription": "Check your email for password reset instructions.",
+      "resetEmailError": "Failed to send reset email. Please try again.",
+      "enterEmail": "Enter your email",
+      "back": "Back",
+      "sending": "Sending...",
+      "sendResetLink": "Send Reset Link"
     }
   },
   es: {
