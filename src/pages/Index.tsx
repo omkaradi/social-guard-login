@@ -13,6 +13,7 @@ import { PasswordExpiryModal } from "@/components/PasswordExpiryModal";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
 import jodoworldLogo from '@/assets/jodoworld-logo.png';
+import cloudsBackground from '@/assets/clouds-background.jpg';
 import '../i18n/config';
 
 const Index = () => {
@@ -173,11 +174,15 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-sso relative overflow-hidden">
-      {/* Background Elements */}
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${cloudsBackground})` }}
+      />
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-background/30 dark:bg-background/50" />
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl opacity-30" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl opacity-20" />
       
       {/* Header */}
       <header className="relative z-10 flex justify-between items-center p-6">
