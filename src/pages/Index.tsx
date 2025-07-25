@@ -202,7 +202,7 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-md mx-auto bg-gradient-card backdrop-blur-lg border-border/20 shadow-card-sso">
+        <Card className="w-full max-w-md mx-auto bg-gradient-card-modern backdrop-blur-xl border-border/30 shadow-card-sso animate-scale-in">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
               <LogIn className="w-8 h-8 text-accent" />

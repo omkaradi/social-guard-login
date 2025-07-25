@@ -41,6 +41,12 @@ All colors MUST be HSL.
     /* Custom black/white theme gradients */
     --gradient-sso: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--card)/0.9) 100%);
+    --gradient-card-modern: linear-gradient(135deg, 
+      hsl(var(--background)/0.9) 0%, 
+      hsl(var(--primary)/0.03) 25%,
+      hsl(var(--background)/0.95) 50%,
+      hsl(var(--accent)/0.05) 75%,
+      hsl(var(--background)/0.9) 100%);
     --shadow-card-sso: 0 25px 50px -12px hsl(var(--foreground)/0.15);
     --shadow-button-sso: 0 10px 25px -8px hsl(var(--foreground)/0.2);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
