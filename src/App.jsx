@@ -7,6 +7,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n/config";
 import Index from "./pages/Index";
 import Modules from "./pages/Modules";
+import Toolbar from "./pages/Toolbar";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/modules" element={<Modules />} />
+            <Route path="/toolbar" element={<Toolbar />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

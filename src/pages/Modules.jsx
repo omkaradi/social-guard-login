@@ -88,8 +88,11 @@ const Modules = () => {
   ];
 
   const handleModuleClick = (moduleId) => {
-    // Add navigation logic for each module
-    console.log(`Navigating to ${moduleId} module`);
+    if (moduleId === 'toolbar') {
+      navigate('/toolbar');
+    } else {
+      console.log(`Navigating to ${moduleId} module`);
+    }
   };
 
   return (
