@@ -252,7 +252,17 @@ const Index = () => {
                   </p>
                 </div>}
 
-              <Button type="submit" className="w-full h-12 bg-primary hover:bg-accent text-primary-foreground shadow-button-sso hover:shadow-button-sso hover:scale-105 transition-smooth" disabled={isLoading || !captchaValid || isAccountLocked}>
+              <Button 
+                type="submit" 
+                className="w-full h-12 bg-primary hover:bg-accent text-primary-foreground shadow-button-sso hover:shadow-button-sso hover:scale-105 transition-smooth" 
+                disabled={isLoading || !captchaValid || isAccountLocked}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!isLoading && captchaValid && !isAccountLocked) {
+                    window.location.href = '/modules';
+                  }
+                }}
+              >
                 {isLoading ? <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                     <span>{t('loading')}</span>
