@@ -14,11 +14,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
 import jodoworldLogo from '@/assets/jodoworld-logo.png';
 import cloudsBackground from '@/assets/clouds-background.jpg';
-
-
 const Index = () => {
-  const { t } = useTranslation();
-  const { toast } = useToast();
+  const {
+    t
+  } = useTranslation();
+  const {
+    toast
+  } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -30,22 +32,18 @@ const Index = () => {
   const [showPasswordExpiry, setShowPasswordExpiry] = useState(false);
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isAccountLocked, setIsAccountLocked] = useState(false);
-
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language');
     if (savedLanguage) {
       // Language is handled by the LanguageSelector component
     }
   }, []);
-
-  const validateEmail = (email) => {
+  const validateEmail = email => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
-  const handleEmailLogin = async (e) => {
+  const handleEmailLogin = async e => {
     e.preventDefault();
-    
     if (isAccountLocked) {
       toast({
         title: t('accountLocked'),
@@ -67,12 +65,10 @@ const Index = () => {
       setEmailError(t('invalidEmail'));
       hasErrors = true;
     }
-
     if (!password) {
       setPasswordError(t('passwordRequired'));
       hasErrors = true;
     }
-
     if (!captchaValid) {
       toast({
         title: t('pleaseCompleteCaptcha'),
@@ -80,9 +76,7 @@ const Index = () => {
       });
       hasErrors = true;
     }
-
     if (hasErrors) return;
-
     setIsLoading(true);
 
     // Simulate login process
@@ -100,7 +94,6 @@ const Index = () => {
         // Wrong password scenario
         const newAttempts = loginAttempts + 1;
         setLoginAttempts(newAttempts);
-        
         if (newAttempts >= 5) {
           setIsAccountLocked(true);
           toast({
@@ -110,7 +103,9 @@ const Index = () => {
         } else {
           const remaining = 5 - newAttempts;
           toast({
-            title: t('attemptWarning', { remaining }),
+            title: t('attemptWarning', {
+              remaining
+            }),
             variant: "destructive"
           });
         }
@@ -133,12 +128,10 @@ const Index = () => {
       setIsLoading(false);
     }
   };
-
-  const handleCaptchaVerify = (isValid) => {
+  const handleCaptchaVerify = isValid => {
     setCaptchaValid(isValid);
   };
-
-  const handleEmailChange = (value) => {
+  const handleEmailChange = value => {
     setEmail(value);
     if (emailError) {
       setEmailError('');
@@ -149,8 +142,7 @@ const Index = () => {
       setEmailError(t('invalidEmail'));
     }
   };
-
-  const handlePasswordChange = (value) => {
+  const handlePasswordChange = value => {
     setPassword(value);
     if (passwordError) {
       setPasswordError('');
@@ -161,7 +153,6 @@ const Index = () => {
       setPasswordError(t('passwordTooShort'));
     }
   };
-
   const handlePasswordUpdate = () => {
     setShowPasswordExpiry(false);
     setLoginAttempts(0);
@@ -170,14 +161,11 @@ const Index = () => {
       description: "You can now login with your new password"
     });
   };
-
-  return (
-    <div className="min-h-screen relative overflow-hidden">
+  return <div className="min-h-screen relative overflow-hidden">
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-        style={{ backgroundImage: `url(${cloudsBackground})` }}
-      />
+      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
+      backgroundImage: `url(${cloudsBackground})`
+    }} />
       
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-background/30 dark:bg-background/50" />
@@ -197,7 +185,7 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-md mx-auto bg-gradient-card-modern backdrop-blur-xl border-border/20 shadow-card-sso animate-scale-in">
+        <Card className="w-full max-w-md mx-auto bg-white/[0.59]">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
               <LogIn className="w-8 h-8 text-accent" />
@@ -222,21 +210,9 @@ const Index = () => {
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder={t('email')}
-                    value={email}
-                    onChange={(e) => handleEmailChange(e.target.value)}
-                    className={`pl-10 bg-background border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth ${
-                      emailError ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : ''
-                    }`}
-                    required
-                  />
+                  <Input id="email" type="email" placeholder={t('email')} value={email} onChange={e => handleEmailChange(e.target.value)} className={`pl-10 bg-background border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth ${emailError ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : ''}`} required />
                 </div>
-                {emailError && (
-                  <p className="text-sm text-destructive font-medium mt-1">{emailError}</p>
-                )}
+                {emailError && <p className="text-sm text-destructive font-medium mt-1">{emailError}</p>}
               </div>
 
               <div className="space-y-3">
@@ -245,36 +221,16 @@ const Index = () => {
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder={t('password')}
-                    value={password}
-                    onChange={(e) => handlePasswordChange(e.target.value)}
-                    className={`pl-10 pr-10 bg-background border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth ${
-                      passwordError ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : ''
-                    }`}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-smooth"
-                  >
+                  <Input id="password" type={showPassword ? "text" : "password"} placeholder={t('password')} value={password} onChange={e => handlePasswordChange(e.target.value)} className={`pl-10 pr-10 bg-background border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth ${passwordError ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : ''}`} required />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-smooth">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                {passwordError && (
-                  <p className="text-sm text-destructive font-medium mt-1">{passwordError}</p>
-                )}
+                {passwordError && <p className="text-sm text-destructive font-medium mt-1">{passwordError}</p>}
               </div>
 
               <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setShowForgotPassword(true)}
-                  className="text-sm text-primary hover:text-accent transition-smooth underline"
-                >
+                <button type="button" onClick={() => setShowForgotPassword(true)} className="text-sm text-primary hover:text-accent transition-smooth underline">
                   {t('forgotPassword')}
                 </button>
               </div>
@@ -282,35 +238,25 @@ const Index = () => {
               <CustomCaptcha onVerify={handleCaptchaVerify} />
 
               {/* Login Attempts Warning */}
-              {loginAttempts > 0 && loginAttempts < 5 && (
-                <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
+              {loginAttempts > 0 && loginAttempts < 5 && <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
                   <p className="text-sm text-destructive text-center">
-                    {t('attemptWarning', { remaining: 5 - loginAttempts })}
+                    {t('attemptWarning', {
+                  remaining: 5 - loginAttempts
+                })}
                   </p>
-                </div>
-              )}
+                </div>}
 
-              {isAccountLocked && (
-                <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
+              {isAccountLocked && <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
                   <p className="text-sm text-destructive text-center font-medium">
                     {t('accountLocked')}
                   </p>
-                </div>
-              )}
+                </div>}
 
-              <Button
-                type="submit"
-                className="w-full h-12 bg-primary hover:bg-accent text-primary-foreground shadow-button-sso hover:shadow-button-sso hover:scale-105 transition-smooth"
-                disabled={isLoading || !captchaValid || isAccountLocked}
-              >
-                {isLoading ? (
-                  <div className="flex items-center space-x-2">
+              <Button type="submit" className="w-full h-12 bg-primary hover:bg-accent text-primary-foreground shadow-button-sso hover:shadow-button-sso hover:scale-105 transition-smooth" disabled={isLoading || !captchaValid || isAccountLocked}>
+                {isLoading ? <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                     <span>{t('loading')}</span>
-                  </div>
-                ) : (
-                  t('getStarted')
-                )}
+                  </div> : t('getStarted')}
               </Button>
             </form>
 
@@ -321,17 +267,10 @@ const Index = () => {
       </main>
 
       {/* Forgot Password Modal */}
-      <ForgotPasswordModal 
-        isOpen={showForgotPassword} 
-        onClose={() => setShowForgotPassword(false)} 
-      />
+      <ForgotPasswordModal isOpen={showForgotPassword} onClose={() => setShowForgotPassword(false)} />
 
       {/* Password Expiry Modal */}
-      <PasswordExpiryModal 
-        isOpen={showPasswordExpiry} 
-        onClose={() => setShowPasswordExpiry(false)} 
-        onPasswordChange={handlePasswordUpdate} 
-      />
+      <PasswordExpiryModal isOpen={showPasswordExpiry} onClose={() => setShowPasswordExpiry(false)} onPasswordChange={handlePasswordUpdate} />
 
       {/* Footer */}
       <footer className="relative z-10 text-center p-6">
@@ -342,8 +281,6 @@ const Index = () => {
           </Badge>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
