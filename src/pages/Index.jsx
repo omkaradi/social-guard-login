@@ -197,7 +197,7 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-md mx-auto bg-gradient-card-modern backdrop-blur-3xl border-border/10 shadow-card-sso animate-scale-in bg-white/[0.27]">
+        <Card className="w-full max-w-md mx-auto bg-gradient-card-modern backdrop-blur-xl border-border/20 shadow-card-sso animate-scale-in">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
               <LogIn className="w-8 h-8 text-accent" />
@@ -215,34 +215,44 @@ const Index = () => {
 
           <CardContent className="space-y-6">
             {/* Email Login Form */}
-            <form onSubmit={handleEmailLogin} className="space-y-4">
-              <div className="space-y-2">
+            <form onSubmit={handleEmailLogin} className="space-y-6">
+              <div className="space-y-3">
+                <label htmlFor="email" className="block text-sm font-medium text-foreground">
+                  {t('email')}
+                </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
+                    id="email"
                     type="email"
                     placeholder={t('email')}
                     value={email}
                     onChange={(e) => handleEmailChange(e.target.value)}
-                    className={`pl-10 bg-input border-border/50 focus:border-primary/50 transition-smooth ${
-                      emailError ? 'border-destructive focus:border-destructive' : ''
+                    className={`pl-10 bg-background border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth ${
+                      emailError ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : ''
                     }`}
                     required
                   />
                 </div>
-                {emailError && <p className="text-sm text-destructive">{emailError}</p>}
+                {emailError && (
+                  <p className="text-sm text-destructive font-medium mt-1">{emailError}</p>
+                )}
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-3">
+                <label htmlFor="password" className="block text-sm font-medium text-foreground">
+                  {t('password')}
+                </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
+                    id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder={t('password')}
                     value={password}
                     onChange={(e) => handlePasswordChange(e.target.value)}
-                    className={`pl-10 pr-10 bg-input border-border/50 focus:border-primary/50 transition-smooth ${
-                      passwordError ? 'border-destructive focus:border-destructive' : ''
+                    className={`pl-10 pr-10 bg-background border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth ${
+                      passwordError ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : ''
                     }`}
                     required
                   />
@@ -254,14 +264,16 @@ const Index = () => {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                {passwordError && <p className="text-sm text-destructive">{passwordError}</p>}
+                {passwordError && (
+                  <p className="text-sm text-destructive font-medium mt-1">{passwordError}</p>
+                )}
               </div>
 
-              <div className="text-right">
+              <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={() => setShowForgotPassword(true)}
-                  className="text-sm text-primary hover:text-accent transition-smooth"
+                  className="text-sm text-primary hover:text-accent transition-smooth underline"
                 >
                   {t('forgotPassword')}
                 </button>
