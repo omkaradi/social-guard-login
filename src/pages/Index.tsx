@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { SSOButtons } from "@/components/SSOButtons";
 import { CustomCaptcha } from "@/components/CustomCaptcha";
 import { ForgotPasswordModal } from "@/components/ForgotPasswordModal";
+import { PasswordExpiryModal } from "@/components/PasswordExpiryModal";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
 import '../i18n/config';
@@ -24,6 +25,9 @@ const Index = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showPasswordExpiry, setShowPasswordExpiry] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [isAccountLocked, setIsAccountLocked] = useState(false);
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language');
@@ -39,6 +43,14 @@ const Index = () => {
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isAccountLocked) {
+      toast({
+        title: t('accountLocked'),
+        variant: "destructive",
+      });
+      return;
+    }
     
     // Reset errors
     setEmailError('');
@@ -76,6 +88,38 @@ const Index = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
+      // Simulate different login scenarios
+      const scenario = Math.random();
+      
+      if (scenario < 0.3) {
+        // Password expired scenario
+        setShowPasswordExpiry(true);
+        setIsLoading(false);
+        return;
+      } else if (scenario < 0.5) {
+        // Wrong password scenario
+        const newAttempts = loginAttempts + 1;
+        setLoginAttempts(newAttempts);
+        
+        if (newAttempts >= 5) {
+          setIsAccountLocked(true);
+          toast({
+            title: t('accountLocked'),
+            variant: "destructive",
+          });
+        } else {
+          const remaining = 5 - newAttempts;
+          toast({
+            title: t('attemptWarning', { remaining }),
+            variant: "destructive",
+          });
+        }
+        setIsLoading(false);
+        return;
+      }
+      
+      // Successful login
+      setLoginAttempts(0);
       toast({
         title: "Welcome back!",
         description: "Demo: Login successful with email authentication",
@@ -106,6 +150,15 @@ const Index = () => {
     if (passwordError) {
       setPasswordError('');
     }
+  };
+
+  const handlePasswordUpdate = () => {
+    setShowPasswordExpiry(false);
+    setLoginAttempts(0);
+    toast({
+      title: "Password updated successfully",
+      description: "You can now login with your new password",
+    });
   };
 
   return (
@@ -210,10 +263,27 @@ const Index = () => {
 
               <CustomCaptcha onVerify={handleCaptchaVerify} />
 
+              {/* Login Attempts Warning */}
+              {loginAttempts > 0 && loginAttempts < 5 && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
+                  <p className="text-sm text-destructive text-center">
+                    {t('attemptWarning', { remaining: 5 - loginAttempts })}
+                  </p>
+                </div>
+              )}
+
+              {isAccountLocked && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
+                  <p className="text-sm text-destructive text-center font-medium">
+                    {t('accountLocked')}
+                  </p>
+                </div>
+              )}
+
               <Button
                 type="submit"
                 className="w-full h-12 bg-primary hover:bg-accent text-primary-foreground shadow-button-sso hover:shadow-button-sso hover:scale-105 transition-smooth"
-                disabled={isLoading || !captchaValid}
+                disabled={isLoading || !captchaValid || isAccountLocked}
               >
                 {isLoading ? (
                   <div className="flex items-center space-x-2">
@@ -236,6 +306,13 @@ const Index = () => {
       <ForgotPasswordModal 
         isOpen={showForgotPassword} 
         onClose={() => setShowForgotPassword(false)} 
+      />
+
+      {/* Password Expiry Modal */}
+      <PasswordExpiryModal 
+        isOpen={showPasswordExpiry} 
+        onClose={() => setShowPasswordExpiry(false)}
+        onPasswordChange={handlePasswordUpdate}
       />
 
       {/* Footer */}
