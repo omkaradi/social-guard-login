@@ -13,7 +13,7 @@ const languages = [
 export const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
-  const handleLanguageChange = (languageCode: string) => {
+  const handleLanguageChange = (languageCode) => {
     i18n.changeLanguage(languageCode);
     localStorage.setItem('language', languageCode);
   };

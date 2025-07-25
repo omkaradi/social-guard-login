@@ -1,12 +1,7 @@
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useTranslation } from 'react-i18next';
 
-interface CaptchaBoxProps {
-  onVerify: (token: string | null) => void;
-  theme?: 'light' | 'dark';
-}
-
-export const CaptchaBox = ({ onVerify, theme = 'light' }: CaptchaBoxProps) => {
+export const CaptchaBox = ({ onVerify, theme = 'light' }) => {
   const { t } = useTranslation();
 
   // Demo site key - in production, use your own site key from Google reCAPTCHA

@@ -13,24 +13,19 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, ArrowLeft } from 'lucide-react';
 
-interface ForgotPasswordModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
+export const ForgotPasswordModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!email) {
@@ -68,7 +63,7 @@ export const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProp
     }
   };
 
-  const handleEmailChange = (value: string) => {
+  const handleEmailChange = (value) => {
     setEmail(value);
     if (emailError) {
       setEmailError('');

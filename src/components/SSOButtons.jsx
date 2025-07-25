@@ -72,10 +72,10 @@ const ssoProviders = [
 
 export const SSOButtons = () => {
   const { t } = useTranslation();
-  const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
+  const [loadingProvider, setLoadingProvider] = useState(null);
   const { toast } = useToast();
 
-  const handleSSOLogin = async (providerId: string) => {
+  const handleSSOLogin = async (providerId) => {
     setLoadingProvider(providerId);
     
     // Simulate SSO login process

@@ -13,13 +13,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, Eye, EyeOff } from 'lucide-react';
 
-interface PasswordExpiryModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onPasswordChange: () => void;
-}
-
-export const PasswordExpiryModal = ({ isOpen, onClose, onPasswordChange }: PasswordExpiryModalProps) => {
+export const PasswordExpiryModal = ({ isOpen, onClose, onPasswordChange }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [currentPassword, setCurrentPassword] = useState('');
@@ -62,7 +56,7 @@ export const PasswordExpiryModal = ({ isOpen, onClose, onPasswordChange }: Passw
     return !Object.values(newErrors).some(error => error);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!validateForm()) return;
